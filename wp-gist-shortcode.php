@@ -285,13 +285,34 @@ function f13_gs_settings_page()
         <div class="wrap">
             <h2>F13 Gist Shortcode Settings</h2>
             <p>
-                This plugin will work with or without a GitHub API token
+                Welcome to the settings page for GitHub Gist Shortcode.
             </p>
             <p>
-                To obtain an API token:
+                This plugin can be used without an API token, although it is recommended to use one as the number of API calls is quite restrictive without one.
+            </p>
+            <p>
+                To obtain a GitHub API token:
                 <ol>
                     <li>
-                        Instructions.
+                        Log-in to your GitHub account.
+                    </li>
+                    <li>
+                        Visit <a href="https://github.com/settings/tokens">https://github.com/settings/tokens</a>.
+                    </li>
+                    <li>
+                        Click the 'Generate new token' button at the top of the page/
+                    </li>
+                    <li>
+                        Re-enter your GitHub password for security.
+                    </li>
+                    <li>
+                        Enter a description, such as 'my wordpress site'.
+                    </li>
+                    <li>
+                        Click the 'Generate token' button at the bottom of the page, no other setting changes are required.
+                    </li>
+                    <li>
+                        Copy and paste your new API token. Please note, your access token will only be visible once.
                     </li>
                 </ol>
             </p>
@@ -319,6 +340,13 @@ function f13_gs_settings_page()
                 </table>
                 <?php submit_button(); ?>
             </form>
+            <h3>Shortcode example</h3>
+            <p>
+                If you wish to display a widget showing details of a gist at: https://gist.github.com/f13dev/fc53666cfbde382ca6a5ae1c519dc65a use the following shortcode, obtaining the 'gid' from the end of the gist.github.com URL:
+            </p>
+            <p>
+                [gist gid="fc53666cfbde382ca6a5ae1c519dc65a"]
+            </p>
         </div>
     <?php
 }
