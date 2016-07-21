@@ -1,0 +1,12 @@
+.f13-gist-container
+{
+  background: #eee;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.f13-gist-header
+{
+  font-size: 1.5em;
+  font-weight: bold;
+}

@@ -89,7 +89,7 @@ function f13_format_gist_data($gistData)
 
         // Add created at/ updated
         $response .= '<div class="f13-gist-created">
-            Created at: ' . $gistData['created_at'] . '
+            Created at: ' . f13_get_git_date($gistData['created_at']) . '
         </div>';
 
         foreach ($gistData['files'] as &$eachFile)
@@ -104,6 +104,24 @@ function f13_format_gist_data($gistData)
     // Close the container div
     $response .= '</div>';
     return $response;
+}
+
+function f13_get_git_date($aDate)
+{
+    // Explode the date
+    $aDate = explode('-', $aDate);
+
+    // Set the year
+    $aYear = $aDate[0];
+
+    // Set the month
+    $aMonth = $aDate[1];
+
+    // Set the day
+    $aDay = $aDate[2][0] . $aDate[2][1];
+
+    return $aDay . ' ' . $aMonth . ' ' . $aYear;
+
 }
 
 function f13_get_gist_data($aGist)
