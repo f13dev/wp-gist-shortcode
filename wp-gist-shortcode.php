@@ -78,9 +78,15 @@ function f13_format_gist_data($gistData)
     $response = '';
 
     // Testing code
+
+    // add username of creator
+    $response .= 'Created by: <a href="https://github.com/' . $gistData['owner']['login'] . '">' . $gistData['owner']['login'] . '</a><br />';
+
+
     foreach ($gistData['files'] as &$eachFile)
     {
-        $response .= $eachFile['filename'] . '<br />';
+        // Add the filename and the size of the file
+        $response .= $eachFile['filename'] . ' (' . round($eachFile['size'] / 1024, 2) . 'kb)<br />';
         $response .= '<pre class="prettyprint lang-' . strtolower($eachFile['language']) . '" style="border: 1px solid black; margin: 10px; padding: 10px; max-height: 200px; overflow: scroll">';
             $response .= nl2br(htmlentities($eachFile['content']));
         $response .= '</pre>';
