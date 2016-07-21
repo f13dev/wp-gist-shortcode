@@ -82,6 +82,8 @@ function f13_format_gist_data($gistData)
     // add username of creator
     $response .= 'Created by: <a href="https://github.com/' . $gistData['owner']['login'] . '">' . $gistData['owner']['login'] . '</a><br />';
 
+    // Add created at/ updated
+    $response .= 'Created at: ' . $gistData['created_at'] . '<br />';
 
     foreach ($gistData['files'] as &$eachFile)
     {
