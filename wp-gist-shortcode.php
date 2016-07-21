@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
 // Register the shortcode
-add_shortcode( 'embedgist', 'f13_gist_shortcode');
+add_shortcode( 'gist', 'f13_gist_shortcode');
 // Register the CSS
 add_action( 'wp_enqueue_scripts', 'f13_gist_shortcode_stylesheet');
 // Register the admin page
@@ -36,37 +36,63 @@ function f13_gist_shortcode( $atts, $content = null )
 {
     // Get the attributes
     extract( shortcode_atts ( array (
-        'gist' => '', // Get the gist ID
+        'gid' => '', // Get the gist ID
     ), $atts ));
 
     // Check if the gist attribute has been received
-    if ($gist != '')
+    if ($gid != '')
     {
         // The gist attribute is present, attempt to get the
         // api response.
-        $data = f13_get_gist_data($gist);
+        $data = f13_get_gist_data($gid);
 
         // Check to see if an error message has been returned,
         if (array_key_exists('message', $data))
         {
             // Alert the user of the error
-            $response = 'The Gist ID: \'' . $gist . '\' returned an error.<br />
+            $response = 'The Gist ID: \'' . $gid . '\' returned an error.<br />
                 Message: ' . $data['message'] . '<br />';
         }
         else
         {
             // A response has been generated and the response does not appear
-            // to contain an error message.
+            // to contain an error message. From now on data will be cached.
 
-            // Return the response of formatting the data
-            $response = f13_format_gist_data($data);
+            // Set the cache name and prefix
+            $cache = get_transient('f13gist' . md5(serialize($atts)));
+
+            if ($cache)
+            {
+                // If the cache exists, return it rather than re-creating it
+                return $cache;
+            }
+            else
+            {
+                // If a cache does not exist, create the shortcode content
+
+                // Generate the formatted data and save it as the response.
+                $response = f13_format_gist_data($data);
+
+                // Get the cache timeout and convert it from minutes to seconds
+                $timeout = esc_attr( get_option('f13gs_timeout')) * 60;
+
+                // If the timeout is set to zero seconds, change it to 1 second,
+                // otherwise the cache will never timeout.
+                if ($timeout == 0 || !is_numeric($timeout))
+                {
+                    $timeout = 1;
+                }
+
+                // Set the transient cache using the response and timeout value
+                set_transient('f13gist' . md5(serialize($atts)), $response, $timeout);
+            }
         }
     }
     else
     {
         // The gist attribute has not been received
         $response = 'The gist attribute is required<br />
-            E.g. [embedgist gist="a gist ID"]';
+            E.g. [gist gid="a gist ID"]';
     }
     // Return the response
     return $response;
@@ -279,7 +305,7 @@ function f13_gs_settings_page()
                             GitHub API Key
                         </th>
                         <td>
-                            <input type="password" name="f13gs_token" value="<?php echo esc_attr( get_option( 'f13bs_token' ) ); ?>" style="width: 50%;"/>
+                            <input type="password" name="f13gs_token" value="<?php echo esc_attr( get_option( 'f13gs_token' ) ); ?>" style="width: 50%;"/>
                         </td>
                     </tr>
                     <tr valign="top">
@@ -287,7 +313,7 @@ function f13_gs_settings_page()
                             Cache timeout (minutes)
                         </th>
                         <td>
-                            <input type="number" name="f13gs_timeout" value="<?php echo esc_attr( get_option( 'f13bs_timeout' ) ); ?>" style="width: 75px;"/>
+                            <input type="number" name="f13gs_timeout" value="<?php echo esc_attr( get_option( 'f13gs_timeout' ) ); ?>" style="width: 75px;"/>
                         </td>
                     </tr>
                 </table>
