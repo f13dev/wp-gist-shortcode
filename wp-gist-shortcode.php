@@ -90,6 +90,7 @@ function f13_format_gist_data($gistData)
         // Add created at/ updated
         $response .= '<div class="f13-gist-created">
             Created at: ' . f13_get_git_date($gistData['created_at']) . '
+            | Last edited: ' . f13_get_git_date($gistData['updated_at']) . '
         </div>';
 
         foreach ($gistData['files'] as &$eachFile)
@@ -115,11 +116,12 @@ function f13_get_git_date($aDate)
     $aYear = $aDate[0];
 
     // Set the month
-    $aMonth = $aDate[1];
+    $aMonth = DateTime::createFromFormat('!m', $aDate[1])->format('F');
 
     // Set the day
     $aDay = $aDate[2][0] . $aDate[2][1];
 
+    // Return the re-formatted date
     return $aDay . ' ' . $aMonth . ' ' . $aYear;
 
 }
