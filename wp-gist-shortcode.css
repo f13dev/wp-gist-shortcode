@@ -5,8 +5,45 @@
   padding: 10px;
 }
 
+.f13-gist-container > hr
+{
+  height: 1px;
+  background-color: #333;
+}
+
+.f13-gist-container > svg
+{
+  height: 1.4em;
+  width: 1.4em;
+  margin-right: 0.5em;
+  margin-bottom: -0.5em;
+}
+
 .f13-gist-header
 {
   font-size: 1.5em;
   font-weight: bold;
+}
+
+.f13-gist-header > svg
+{
+  height: 1em;
+  width: 1em;
+  margin-bottom: -0.1em;
+}
+
+.f13-gist-files-head
+{
+  margin-top: -0.5em;
+}
+
+.f13-gist-description > span
+{
+  font-weight: bold;
+  display: block;
+}
+
+.f13-gist-files-head > span
+{
+  font-size: 1.5em;
 }

@@ -80,11 +80,10 @@ function f13_format_gist_data($gistData)
     // Open a container div
     $response .= '<div class="f13-gist-container">';
 
-        // Testing code
-
         // add username of creator
         $response .= '<div class="f13-gist-header">
-            Created by: <a href="https://github.com/' . $gistData['owner']['login'] . '">' . $gistData['owner']['login'] . '</a>
+            <svg aria-hidden="true" version="1.1" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+            Gist created by: <a href="https://github.com/' . $gistData['owner']['login'] . '">' . $gistData['owner']['login'] . '</a>
         </div>';
 
         // Add created at/ updated
@@ -93,12 +92,50 @@ function f13_format_gist_data($gistData)
             | Last edited: ' . f13_get_git_date($gistData['updated_at']) . '
         </div>';
 
+        // Add the description if it exists
+        if ($gistData['description'] != '')
+        {
+            // Create a description div
+            $response .= '<div class="f13-gist-description">';
+
+                // Add a span to contain the title
+                $response .= '<span>Description:</span> ';
+
+                // Add the description
+                $response .= htmlentities($gistData['description']);
+
+            // Close the description div
+            $response .= '</div>';
+        }
+
+        // Add a horizontal rule to seperate the header data and file data
+        $response .= '<hr />';
+
+        // Add a div for the files head
+        $response .= '<div class="f13-gist-files-head">';
+
+            // Add the header text and number of files
+            $response .= '<span>Files</span> (' . count($gistData['files']) . ')';
+
+        // Close the div for the files head
+        $response .= '</div>';
+
         foreach ($gistData['files'] as &$eachFile)
         {
-            // Add the filename and the size of the file
+            // Add the Gist icon
+            $response .= '<svg aria-hidden="true" version="1.1" viewBox="0 0 12 16"><path d="M7.5 5L10 7.5 7.5 10l-.75-.75L8.5 7.5 6.75 5.75 7.5 5zm-3 0L2 7.5 4.5 10l.75-.75L3.5 7.5l1.75-1.75L4.5 5zM0 13V2c0-.55.45-1 1-1h10c.55 0 1 .45 1 1v11c0 .55-.45 1-1 1H1c-.55 0-1-.45-1-1zm1 0h10V2H1v11z"></path></svg>';
+
+            // Add the filename and size
             $response .= $eachFile['filename'] . ' (' . round($eachFile['size'] / 1024, 2) . 'kb) <a href="' . $eachFile['raw_url'] . '" download>Download file</a><br />';
+
+            // Create a prettyprint pre element
             $response .= '<pre class="prettyprint lang-' . strtolower($eachFile['language']) . '" style="border: 1px solid black; margin: 10px; padding: 10px; max-height: 200px; overflow: scroll">';
+
+                // Add the file contents using nl2br to create new lines
+                // and htmlentities to convert symbols such as < to &lt; etc...
                 $response .= nl2br(htmlentities($eachFile['content']));
+
+            // Close the prettyprint pre element
             $response .= '</pre>';
         }
 
