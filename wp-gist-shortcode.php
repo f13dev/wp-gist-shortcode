@@ -86,7 +86,7 @@ function f13_format_gist_data($gistData)
     foreach ($gistData['files'] as &$eachFile)
     {
         // Add the filename and the size of the file
-        $response .= $eachFile['filename'] . ' (' . round($eachFile['size'] / 1024, 2) . 'kb)<br />';
+        $response .= $eachFile['filename'] . ' (' . round($eachFile['size'] / 1024, 2) . 'kb) <a href="' . $eachFile['raw_url'] . '" download>Download file</a><br />';
         $response .= '<pre class="prettyprint lang-' . strtolower($eachFile['language']) . '" style="border: 1px solid black; margin: 10px; padding: 10px; max-height: 200px; overflow: scroll">';
             $response .= nl2br(htmlentities($eachFile['content']));
         $response .= '</pre>';
