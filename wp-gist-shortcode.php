@@ -90,23 +90,30 @@ function f13_format_gist_data($gistData)
         $response .= '<div class="f13-gist-created">
             Created at: ' . f13_get_git_date($gistData['created_at']) . '
             | Last edited: ' . f13_get_git_date($gistData['updated_at']) . '
+            | <a href="https://gist.github.com/' . $gistData['owner']['login'] . '/' . $gistData['id'] . '">View on GitHub</a>
         </div>';
 
-        // Add the description if it exists
-        if ($gistData['description'] != '')
-        {
-            // Create a description div
-            $response .= '<div class="f13-gist-description">';
+        // Create a description div
+        $response .= '<div class="f13-gist-description">';
 
-                // Add a span to contain the title
-                $response .= '<span>Description:</span> ';
+            // Add a span to contain the title
+            $response .= '<span>Description:</span> ';
 
+            // Check if a description is set
+            if ($gistData['description'] != '')
+            {
                 // Add the description
                 $response .= htmlentities($gistData['description']);
+            }
+            else
+            {
+                // If no description is set, respond n/a
+                $response .= 'N/A';
+            }
 
-            // Close the description div
-            $response .= '</div>';
-        }
+        // Close the description div
+        $response .= '</div>';
+
 
         // Add a horizontal rule to seperate the header data and file data
         $response .= '<hr />';
@@ -138,6 +145,12 @@ function f13_format_gist_data($gistData)
             // Close the prettyprint pre element
             $response .= '</pre>';
         }
+
+        // Add a horizontal rule to end the files section
+        $response .= '<hr />';
+
+        // Add comment count
+        $response .= 'Comments: <a href="https://gist.github.com/' . $gistData['owner']['login'] . '/' . $gistData['id'] . '#comments">' . $gistData['comments'] . '</a>';
 
     // Close the container div
     $response .= '</div>';

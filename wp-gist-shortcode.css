@@ -37,6 +37,11 @@
   margin-top: -0.5em;
 }
 
+.f13-gist-description
+{
+  margin-bottom: -0.5em;
+}
+
 .f13-gist-description > span
 {
   font-weight: bold;
@@ -46,4 +51,9 @@
 .f13-gist-files-head > span
 {
   font-size: 1.5em;
+}
+
+.f13-gist-container svg
+{
+  fill: #6B6B6B;
 }
