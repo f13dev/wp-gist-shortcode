@@ -77,22 +77,32 @@ function f13_format_gist_data($gistData)
     // Create a new variable to hold the response
     $response = '';
 
-    // Testing code
+    // Open a container div
+    $response .= '<div class="f13-gist-container">';
 
-    // add username of creator
-    $response .= 'Created by: <a href="https://github.com/' . $gistData['owner']['login'] . '">' . $gistData['owner']['login'] . '</a><br />';
+        // Testing code
 
-    // Add created at/ updated
-    $response .= 'Created at: ' . $gistData['created_at'] . '<br />';
+        // add username of creator
+        $response .= '<div class="f13-gist-header">
+            Created by: <a href="https://github.com/' . $gistData['owner']['login'] . '">' . $gistData['owner']['login'] . '</a>
+        </div>';
 
-    foreach ($gistData['files'] as &$eachFile)
-    {
-        // Add the filename and the size of the file
-        $response .= $eachFile['filename'] . ' (' . round($eachFile['size'] / 1024, 2) . 'kb) <a href="' . $eachFile['raw_url'] . '" download>Download file</a><br />';
-        $response .= '<pre class="prettyprint lang-' . strtolower($eachFile['language']) . '" style="border: 1px solid black; margin: 10px; padding: 10px; max-height: 200px; overflow: scroll">';
-            $response .= nl2br(htmlentities($eachFile['content']));
-        $response .= '</pre>';
-    }
+        // Add created at/ updated
+        $response .= '<div class="f13-gist-created">
+            Created at: ' . $gistData['created_at'] . '
+        </div>';
+
+        foreach ($gistData['files'] as &$eachFile)
+        {
+            // Add the filename and the size of the file
+            $response .= $eachFile['filename'] . ' (' . round($eachFile['size'] / 1024, 2) . 'kb) <a href="' . $eachFile['raw_url'] . '" download>Download file</a><br />';
+            $response .= '<pre class="prettyprint lang-' . strtolower($eachFile['language']) . '" style="border: 1px solid black; margin: 10px; padding: 10px; max-height: 200px; overflow: scroll">';
+                $response .= nl2br(htmlentities($eachFile['content']));
+            $response .= '</pre>';
+        }
+
+    // Close the container div
+    $response .= '</div>';
     return $response;
 }
 
